@@ -24,7 +24,12 @@ public class AdapterDao<T> implements InterfazDao<T> {
     }
 
     public T get(Integer id) throws Exception {
-        return null; // Implementar según sea necesario
+        LinkedList<T> list = listAll(); // Implementar según sea necesario
+        if(!list.isEmpty()){
+            T[] matriz = list.toArray();
+            return matriz[id - 1];
+        }
+        return null;
     }
 
     public LinkedList<T> listAll() {
@@ -41,7 +46,10 @@ public class AdapterDao<T> implements InterfazDao<T> {
     }
 
     public void merge(T object, Integer index) throws Exception {
-        // Implementación pendiente
+        LinkedList<T> list = listAll();
+        list.update(object, index);
+        String info = g.toJson(list.toArray());
+        saveFile(info);
     }
 
     public void persist(T object) throws Exception {
