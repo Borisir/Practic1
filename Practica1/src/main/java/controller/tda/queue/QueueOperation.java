@@ -2,36 +2,42 @@ package controller.tda.queue;
 
 
 import controller.tda.list.ListEmptyException;
-import controller.tda.stack.FullStackException;
+import controller.exception.OverFlowException;
+import controller.tda.list.LinkedList;
 
-public class QueueOperation<E> {
-    private Queue<E> tail;
+public class QueueOperation<E> extends LinkedList<E>{
+    private Integer top;
 
-    public QueueOperation(Integer size) {
-        this.tail = new Queue<>(size);
+    public QueueOperation(Integer top) {
+        this.top = top;
     }
 
-    public void queue(E info) throws ListEmptyException, FullStackException {
-        tail.queue(info);
+    public boolean verify () {
+        return getSize().intValue() <= top.intValue();
     }
 
-    public E dequeue() throws ListEmptyException {
-        return tail.dequeue();
-
+    public void queue (E dato) throws Exception {
+        if (verify()) {
+            add(dato, getSize());
+        } else {
+            throw new OverFlowException("Cola llena");
+        }
     }
 
-    public Integer size() {
-        return tail.getSize();
+    public E dequeue() throws Exception {
+        if (isEmpty()) {
+            throw new ListEmptyException("Cola vacia");
+        } else {
+            return deleteFirst();
+        }
+        
     }
 
-    public Boolean isFull() {
-        return tail.isFull();
+    public Integer getTop() {
+        return top;
     }
 
-    public void print() {
-        System.out.println("STACK");
-        System.out.println(tail.toString() + "\n");
-
+    public void setTop(Integer top) {
+        this.top = top;
     }
-
 }

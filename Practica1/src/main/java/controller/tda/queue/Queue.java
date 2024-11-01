@@ -1,33 +1,31 @@
 package controller.tda.queue;
 
-import controller.tda.list.LinkedList;
-import controller.tda.list.ListEmptyException;
-import controller.tda.stack.FullStackException;
 
-public class Queue<E> extends LinkedList<E> {
-    private Integer cima;
-
-    public Queue(Integer tope) {
-        this.cima = tope;
+public class Queue<E> {
+    private QueueOperation <E> queueOperation;
+    public Queue(Integer cant){
+        this.queueOperation = new QueueOperation<>(cant);
     }
-
-    public Boolean isFull() {
-        return getSize().intValue() >= cima.intValue();
+    public void queue(E dato) throws Exception {
+        queueOperation.queue(dato);
     }
-
-    public void queue(E info) throws ListEmptyException, FullStackException {
-        if (isFull()) {
-            throw new FullStackException("QUEUE FULL");
-        } else {
-            add(info);
-        }
+    public Integer getSize() {
+        return this.queueOperation.getSize();
     }
-
-    public E dequeue() throws ListEmptyException {
-
-        E info = extractFirs();
-        return info;
-
+    public void clear() {
+        this.queueOperation.reset();
     }
+    public Integer getTop() {
+        return this.queueOperation.getTop();
+    }
+    public void print(){
+        System.out.println("COLA");
+        System.out.println(queueOperation.toString());
+        System.out.println("*******");
+    }
+    public E dequeue() throws Exception {
+        return queueOperation.dequeue();
+    }
+    
 
 }

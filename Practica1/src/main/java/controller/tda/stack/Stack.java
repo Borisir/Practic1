@@ -1,34 +1,36 @@
 package controller.tda.stack;
 
-import controller.tda.list.LinkedList;
-import controller.tda.list.ListEmptyException;
 
-public class Stack<E> extends LinkedList<E> {
-    private Integer tope;
+public class Stack<E> {
 
-    public Stack(Integer tope) {
-        this.tope = tope;
+    private StackOperation<E> stackOperation;
+    public Stack(Integer cant) {
+        this.stackOperation = new StackOperation<>(cant);
     }
 
-    public Boolean isFull() {
-        return getSize().intValue() >= tope.intValue();
+    public void push(E dato) throws Exception {
+        stackOperation.push(dato);
     }
 
-    public void push(E info) throws ListEmptyException, FullStackException {
-        if (isFull()) {
-            throw new FullStackException("STACK FULL");
-        } else {
-            add(info, 0);
-
-        }
-
+    public Integer getsize () {
+        return this.stackOperation.getSize();
     }
 
-    public E pop() throws ListEmptyException {
-
-        E info = extractFirs();
-        return info;
-
+    public void clear() {
+        this.stackOperation.reset();
     }
+    public Integer getTop() {
+        return this.stackOperation.getTop();
+    }
+    public void print(){
+        System.out.println("PILA");
+        System.out.println(stackOperation.toString());
+        System.out.println("*******");
+    }
+
+    public E pop () throws Exception {
+        return stackOperation.pop();
+    }
+
 
 }

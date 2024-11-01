@@ -1,35 +1,42 @@
 package controller.tda.stack;
 
 import controller.tda.list.ListEmptyException;
+import controller.exception.OverFlowException;
+import controller.tda.list.LinkedList;
 
-public class StackOperation<E> {
-    private Stack<E> stack;
+public class StackOperation<E> extends LinkedList<E> {
+    private Integer top;
 
-    public StackOperation(Integer length) {
-        this.stack = new Stack<>(length);
+    public StackOperation(Integer top) {
+        this.top = top;
     }
 
-    public void push(E info) throws ListEmptyException, FullStackException {
-        stack.push(info);
+    public boolean verify () {
+        return getSize().intValue() <= top.intValue();
     }
 
+    public void push(E dato) throws Exception {
+        if (verify()) {
+            add(dato, 0);
+        } else {
+            throw new OverFlowException("pila llena");
+        }
+    }
     public E pop() throws ListEmptyException {
-        return stack.pop();
-
+        if (isEmpty()) {
+            throw new ListEmptyException("pila vacia");
+        } else {
+            return deleteFirst();
+        }
+        
     }
 
-    public Integer lenght() {
-        return stack.getSize();
+    public Integer getTop() {
+        return top;
     }
 
-    public Boolean isFull() {
-        return stack.isFull();
-    }
-
-    public void print() {
-        System.out.println("STACK");
-        System.out.println(stack.toString() + "\n");
-
+    public void setTop(Integer top) {
+        this.top = top;
     }
 
 }

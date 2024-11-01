@@ -1,8 +1,8 @@
 -------------------------------------------------------------------------------
 Test set: com.example.rest.MyResourceTest
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.951 s <<< FAILURE! -- in com.example.rest.MyResourceTest
-com.example.rest.MyResourceTest.testGetIt -- Time elapsed: 0.904 s <<< ERROR!
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.877 s <<< FAILURE! -- in com.example.rest.MyResourceTest
+com.example.rest.MyResourceTest.testGetIt -- Time elapsed: 0.822 s <<< ERROR!
 javax.ws.rs.NotFoundException: HTTP 404 Not Found
 	at org.glassfish.jersey.client.JerseyInvocation.convertToException(JerseyInvocation.java:948)
 	at org.glassfish.jersey.client.JerseyInvocation.translate(JerseyInvocation.java:755)
