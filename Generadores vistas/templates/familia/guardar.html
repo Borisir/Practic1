@@ -4,7 +4,7 @@
 <div class="container mt-5">
     <div class="card shadow-sm p-4 rounded">
         <h2 class="text-center mb-4">Registrar Generador</h2>
-        <form class="row g-4" method="post" action="/familias/guardar/{{listag[0].numeroSerie}}">
+        <form class="row g-4" method="post" action="/familias/guardar/{{generador.numeroSerie}}">
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="mod" class="form-label">Nombre de la famila</label>
@@ -17,7 +17,7 @@
                     <input type="text" class="form-control" name="nm" step="0.01" placeholder="Ej. 2" required>
                 </div>
             </div>
-            <input type="hidden" name="id" value="{{ listag[0].numeroSerie }}">
+            <input type="hidden" name="id" value="{{ generador.numeroSerie }}">
                 <button type="submit" class="btn btn-outline-success btn-lg mt-3">Guardar Generador</button>
             </div>
         </form>
