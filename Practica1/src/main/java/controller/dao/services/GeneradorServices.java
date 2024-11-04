@@ -13,6 +13,10 @@ public class GeneradorServices {
     public Boolean save() throws Exception {
         return obj.save();
     }
+
+    public Boolean update() throws Exception {
+        return obj.update();
+    }
     
     public LinkedList<Generador> listAll(){
         return obj.getListAll();
@@ -22,7 +26,11 @@ public class GeneradorServices {
         return obj.getGenerador();
     }
 
-    public void setIdGenerador(Generador generador) {
+    public void setGenerador(Generador generador) {
         obj.setGenerador(generador);
+    }
+
+    public Generador get(Integer id) throws Exception {
+        return obj.get(id);
     }
 }

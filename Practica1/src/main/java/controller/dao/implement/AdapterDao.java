@@ -32,6 +32,8 @@ public class AdapterDao<T> implements InterfazDao<T> {
         return null;
     }
 
+
+//to_list
     public LinkedList<T> listAll() {
         LinkedList<T> list = new LinkedList<>();
         try {

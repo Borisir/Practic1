@@ -36,4 +36,10 @@ public class GeneradorDao extends AdapterDao<Generador> {
         persist(getGenerador());
         return true;
     }
+
+    public Boolean update() throws Exception {
+        this.merge(getGenerador(), getGenerador().getId() - 1);
+        this.listAll = listAll();
+        return true;
+    }
 }

@@ -1,0 +1,52 @@
+{% extends 'template.html' %}
+{% block content %}
+
+<div class="container mt-5">
+    <div class="card shadow-sm p-4 rounded">
+        <h2 class="text-center mb-4">Registrar Generador</h2>
+        <form class="row g-4" method="post" action="/generadores/editar">
+            <input type="hidden" name="id" value="{{lista.id}}">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="mod" class="form-label">Modelo de Generador</label>
+                    <input type="text" class="form-control" name="mod" value="{{lista.modelo}}"  required>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="cos" class="form-label">Costo</label>
+                    <input type="number" class="form-control" name="cos" value="{{lista.costo}}"  required>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="cph" class="form-label">Consumo por Hora</label>
+                    <input type="number" class="form-control" name="cph" value="{{lista.consumoPorHora}}"  required>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="pce" class="form-label">Energía Producida</label>
+                    <input type="number" class="form-control" name="pce" value="{{lista.podruccionEnergia}}"  required>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="uso" class="form-label">Uso del Generador</label>
+                    <input type="text" class="form-control" name="uso"  value="{{lista.uso}}" required>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="ns" class="form-label">Número de Serie del Generador</label>
+                    <input type="text" class="form-control" name="ns" value="{{lista.numeroSerie}}" required>
+                </div>
+            </div>
+            <div class="col-12 text-center">
+                <button type="submit" class="btn btn-outline-success btn-lg mt-3">Guardar Generador</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

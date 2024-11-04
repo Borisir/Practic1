@@ -1,0 +1,28 @@
+{% extends 'template2.html' %}
+{% block content %}
+
+<h1 class="text-center mt-5">Generadores Registrados</h1>
+<section id="courses" class="courses section">
+    <div class="container mt-5">
+        <table class="table table-bordered table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Nombre de la famila</th>
+                    <th>Numeor de miembros</th>
+                    <th>Serie del generador</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in lista %}
+                <tr>
+                    <td>{{ item.nombre }}</td>
+                    <td>{{ item.numeroMiembros }}</td>
+                    <td>{{ item.generadorasociado }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+
+{% endblock %}

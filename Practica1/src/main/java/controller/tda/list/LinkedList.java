@@ -3,10 +3,9 @@ package controller.tda.list;
 import controller.tda.list.LinkedList;
 
 public class LinkedList<E> {
-    private Node<E> header; // Nodo cabecera (el primer nodo de la lista)
-    private Node<E> last; // Nodo último (el último nodo de la lista)
-    private Integer size; // Tamaño de la lista (cuenta el número de nodos en la lista)
-
+    private Node<E> header; 
+    private Node<E> last; 
+    private Integer size; 
     // Constructor de la clase LinkedList
     public LinkedList() {
         this.header = null; // Inicialmente, la cabecera es nula (no hay nodos en la lista)
@@ -75,24 +74,93 @@ public class LinkedList<E> {
         }
     }
 
-    public E extractFirs() throws ListEmptyException {
-        // extrae de la lista y no devuelve
+
+  
+    public void update(E data, Integer post) throws ListEmptyException {
+        if(isEmpty()) {
+            throw new ListEmptyException("Error, la lista esta vacia");
+        } else if(post < 0 || post >= size) {
+            throw new IndexOutOfBoundsException("Error, fuera de rango");
+        } else if(post == 0) {
+            header.setInfo(data);
+        } else if(post == (this.size - 1)) {
+            last.setInfo(data);
+        } else {
+            Node<E> search = getNode(post);
+            Integer cont = 0;
+            while(cont < post) {
+                cont++;
+                search = search.getNext();
+            }
+            search.setInfo(data);
+        }
+
+    }
+    
+
+    //borrar la cabezera
+    public E deleteFirst() throws ListEmptyException {
         if (isEmpty()) {
-            throw new ListEmptyException("Lista vacia");
+            throw new ListEmptyException("Error, lista vacia");
         } else {
             E element = header.getInfo();
-            Node<E> help = header.getNext();
-            header = null;
-            header = help;
-
-            if (size == 1) {
+            Node<E>  aux = header.getNext();
+            header = aux;
+            if (size.intValue() == 1) {
                 last = null;
             }
-
             size--;
             return element;
         }
     }
+
+    public E deleteLast() throws ListEmptyException {
+        if (isEmpty()) {
+            throw new ListEmptyException("Error, lista vacia");
+        } else {
+            E element = last.getInfo();
+            Node<E> aux = getNode(size - 2);
+            if(aux == null) {
+                last = null;
+                if(size == 2) {
+                    last = header;
+                } else {
+                    header = null;
+                }
+            } else {
+                last = null;
+                last = aux;
+                last.setNext(null);
+            }
+            size--;
+            return element;
+        }
+    }
+
+    public E delete(Integer post) throws ListEmptyException {
+        if(isEmpty()) {
+            throw new ListEmptyException("Error, lista vacia");
+        } else if (post < 0 || post >= size) {
+            throw new IndexOutOfBoundsException("Error, fuera de rango");
+        } else if (post == 0) {
+            return deleteFirst();
+        } else if (post == (size - 1)) {
+            return deleteLast();
+        } else {
+            Node<E> preview = getNode(post - 1);
+            Node<E> actually = getNode(post);
+            E element = preview.getInfo();
+            Node<E> next = actually.getNext();
+            actually = null;
+            preview.setNext(next);
+            size--;
+            return element;
+        }
+    }
+
+
+
+
 
     private E getFirst() throws ListEmptyException {
         if (isEmpty()) {
@@ -148,14 +216,16 @@ public class LinkedList<E> {
         this.last = null;
         this.size = 0;
     }
+    
 
+    //nos permite los datos de una lista 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("List data \n");
+        StringBuilder sb = new StringBuilder("List data");
         try {
             Node<E> help = header;
             while (help != null) {
-                sb.append(help.getInfo()).append(" ->");
+                sb.append(help.getInfo()).append(" -> ");
                 help = help.getNext();
             }
         } catch (Exception e) {
@@ -177,7 +247,7 @@ public class LinkedList<E> {
         E[] matrix = null;
         if (!isEmpty()) {
             Class clazz = header.getInfo().getClass();
-            matrix = (E[])java.lang.reflect.Array.newInstance(clazz, size);
+            matrix = (E[]) java.lang.reflect.Array.newInstance(clazz, size);
             Node<E> aux = header;
             for (int i = 0; i < this.size; i++) {
                 matrix[i] = aux.getInfo();
@@ -195,87 +265,37 @@ public class LinkedList<E> {
         }
         return this;
     }
-
-    public void update (E data, Integer post) throws ListEmptyException{
+    
+    public LinkedList<E> filter(Object data) throws ListEmptyException {
         if (isEmpty()) {
-             throw new ListEmptyException("ERROR, LA LISTA ESTA VACIA");          
-        }   else if (post < 0 || post >= size){
-                throw new IndexOutOfBoundsException("ERROR, ESTA FUERA DE LOS LIMITES DE LA LISTA");
-        }   else if (post == 0){
-                header.setInfo(data);
-        }   else if (post ==(size -1)){
-                last.setInfo(data);
-        }   else {
-                Node<E> search = header;
-                Integer cont = 0;
-                while (cont < post){
-                    cont++;
-                    search = search.getNext();
-                }
-                search.setInfo(data);
+            throw new ListEmptyException("Error, la lista está vacía");
+        }
+        
+        E[] array = toArray();
+        LinkedList<E> aux = new LinkedList<>();
+        
+        for (E element : array) {
+            try {
+                java.lang.reflect.Field generadorasociadoField = element.getClass().getDeclaredField("generadorasociado");
+                generadorasociadoField.setAccessible(true);
                 
-        }
-            
-
-    }
-
-    public E deleteFirst() throws ListEmptyException {
-        if (isEmpty()) {
-            throw new ListEmptyException("LISTA VACIA");
-        } else {
-            E element = header.getInfo();
-            Node<E> aux = header.getNext();
-            header = aux;
-            if (size.intValue()==1) {
-                last = null;
+                Object generadorasociadoValue = generadorasociadoField.get(element);
+                System.out.println("Comparando generadorasociado: " + generadorasociadoValue + " con: " + data); // Debug
+                
+                if (generadorasociadoValue != null && generadorasociadoValue.equals(data)) {
+                    aux.add(element);
+                }
+            } catch (NoSuchFieldException e) {
+                System.out.println("Campo 'generadorasociado' no encontrado en la clase " + element.getClass().getName());
+                continue;
+            } catch (IllegalAccessException e) {
+                System.out.println("Error de acceso al campo 'generadorasociado' en la clase " + element.getClass().getName());
+                continue;
             }
-            size--;
-            return element;
         }
+        
+        return aux;
     }
-
-    public E deleteLast () throws ListEmptyException {
-        if (isEmpty()) {
-            throw new ListEmptyException("LISTA VACIA");
-        } else {
-            E element = last.getInfo();
-            Node <E> aux = getNode(size - 2);
-            if (aux == null) {
-                last = null;
-               if (size ==2) {
-                    last = header;
-            }   else {
-                    header = null;
-            }
-            }   else {
-                last = null;
-                last=aux;
-                last.setNext(null);
-            }
-            size--;
-            return element;
-        }
-    }
-
-    public E delete (Integer post) throws ListEmptyException {
-        if (isEmpty()) {
-            throw new ListEmptyException("ERROR, LA LISTA ESTA VACIA    ");
-        } else if (post < 0 || post >= size) {
-            throw new IndexOutOfBoundsException("ERROR, ESTA FUERA DE LOS LIMITES DE LA LISTA");
-        } else if (post == 0) {
-            return deleteFirst();
-        } else if (post == (size - 1)) {
-            return deleteLast();
-        } else {
-            Node<E> preview = getNode(post - 1);
-            Node<E> actually = getNode(post);
-            E element = preview.getInfo();
-            Node <E> next = actually.getNext();
-            actually = null;
-            preview.setNext(next);
-            size--;
-            return element;
-        }
-    }
-
+    
+    
 }

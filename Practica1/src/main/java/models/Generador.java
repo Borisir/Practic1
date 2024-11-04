@@ -1,7 +1,7 @@
 package models;
 
 public class Generador {
-    private int id;
+    private Integer id;
     private String modelo;
     private float costo;
     private float consumoPorHora;
@@ -39,10 +39,10 @@ public class Generador {
     public void setNumeroSerie(String numeroSerie) {
         this.numeroSerie = numeroSerie;
     }
-    public int getId() {
+    public Integer getId() {
         return id;
     }
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
     public String getModelo() {
@@ -60,7 +60,7 @@ public class Generador {
         this.uso = "";
         this.numeroSerie = "";
     }
-    public Generador(int id, String modelo, float costo, float consumoPorHora, float podruccionEnergia, String uso, String numeroSerie){
+    public Generador(Integer id, String modelo, float costo, float consumoPorHora, float podruccionEnergia, String uso, String numeroSerie){
         this.id = id;
         this.modelo = modelo;
         this.costo = costo;

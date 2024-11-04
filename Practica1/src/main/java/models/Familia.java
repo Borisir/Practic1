@@ -1,15 +1,15 @@
 package models;
 
 public class Familia {
-    private int id;
+    private Integer id;
     private String nombre;
-    private int numeroMiembros;
-    private String generadorId;
+    private Integer numeroMiembros;
+    private String generadorasociado;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
     public String getNombre() {
@@ -18,29 +18,29 @@ public class Familia {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    public int getNumeroMiembros() {
+    public Integer getNumeroMiembros() {
         return numeroMiembros;
     }
-    public void setNumeroMiembros(int numeroMiembros) {
+    public void setNumeroMiembros(Integer numeroMiembros) {
         this.numeroMiembros = numeroMiembros;
     }
-    public String getGeneradorId() {
-        return generadorId;
+    public String getgeneradorasociado() {
+        return generadorasociado;
     }
-    public void setGeneradorId(String generadorId) {
-        this.generadorId = generadorId;
+    public void setgeneradorasociado(String generadorasociado) {
+        this.generadorasociado = generadorasociado;
     }
     public Familia(){
         this.id = 0;
         this.nombre = "";
         this.numeroMiembros = 0;
-        this.generadorId = "";
+        this.generadorasociado = "";
     }
-    public Familia(int id, String nombre, int numeroMiembros, String generadorId){
+    public Familia(Integer id, String nombre, Integer numeroMiembros, String generadorasociado){
         this.id = id;
         this.nombre = nombre;
         this.numeroMiembros = numeroMiembros;
-        this.generadorId = generadorId;
+        this.generadorasociado = generadorasociado;
     }
     
     

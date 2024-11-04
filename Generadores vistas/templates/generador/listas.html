@@ -1,0 +1,45 @@
+
+{% extends 'template.html' %}
+{% block content %}
+
+<h1 class="text-center mt-5">Generadores Registrados</h1>
+<section id="courses" class="courses section">
+    <div class="container mt-5">
+        <table class="table table-bordered table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>N</th>
+                    <th>Modelo de generador</th>
+                    <th>Costo</th>
+                    <th>Consumo por hora</th>
+                    <th>Energia producida</th>
+                    <th>Uso del generador</th>
+                    <th>Numero de serie del generador</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in lista %}
+                <tr>
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.modelo }}</td>
+                    <td>{{ item.costo }}</td>
+                    <td>{{ item.consumoPorHora }}</td>
+                    <td>{{ item.podruccionEnergia }}</td>
+                    <td>{{ item.uso }}</td>
+                    <td>{{ item.numeroSerie }}</td>
+                    <td>
+                        <div class="btn-group-custom" >
+                            <button type="button" class="btn btn-danger btn-sm">Eliminar</button>
+                            <a type="button" class="btn btn-primary btn-sm" href="/generadores/editar/{{item.id}}">Editar</a>
+                            <a type="button" class="btn btn-success btn-sm" href="/familias/{{ item.numeroSerie }}">Ver familias</a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+
+{% endblock %}
