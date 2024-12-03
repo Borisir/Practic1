@@ -2,6 +2,8 @@ from flask import Blueprint, abort, request, render_template, redirect
 import json
 import requests
 from flask import flash
+from flask import jsonify
+
 router = Blueprint('router', __name__)
 
 router = Blueprint('router', __name__)
@@ -130,3 +132,29 @@ def guardar_familia(numeroSerie):
     else:
         flash(str(dat["message"]),'Error al guardar la familia')
         return redirect('/familias/'+numeroSerie)
+
+@router.route('/busquedad/<busquedad>/<criterio>/<valor>')
+def buscarp(busquedad,criterio,valor):
+    url = 'http://localhost:8080/api/generador/metodosdebusquedad/' + busquedad + "/" + criterio + "/" + valor 
+    r = requests.get(url)
+
+    if r.status_code == 200:
+        data2= r.json()
+        return jsonify(data2)
+    else:
+        return jsonify({"messge": "Error al buscar los proyectos"}), 400
+
+
+@router.route('/ordenar/<metodo>/<type_order>/<atributo>')
+def ordenarp(metodo,type_order,atributo):
+    url = 'http://localhost:8080/api/generador/ordenarg/' + metodo + "/" + type_order + "/" + atributo 
+    r = requests.get(url)
+
+    if r.status_code == 200:
+        data2= r.json()
+        return jsonify(data2)
+    else:
+        return jsonify({"messge": "Error al buscar los proyectos"}), 400
+
+    
+

@@ -1,27 +1,86 @@
-
 {% extends 'template.html' %}
 {% block content %}
 
 <h1 class="text-center mt-5">Generadores Registrados</h1>
+<div class="card shadow-sm p-3 mb-4 bg-body-tertiary rounded">
+    <form id="form-ordenar">
+        <div class="row g-3 align-items-center">
+            <div class="col-md-4">
+                <label for="metodo" class="form-label">Algoritmo:</label>
+                <select id="metodo" name="metodo" class="form-select">
+                    <option value="metodo1">QuickSort</option>
+                    <option value="metodo2">MergeSort</option>
+                    <option value="metodo3">ShellSort</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label for="type_order" class="form-label">Orden:</label>
+                <select id="type_order" name="type_order" class="form-select">
+                    <option value="1">Ascendente</option>
+                    <option value="2">Descendente</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label for="atributo" class="form-label">Atributo:</label>
+                <select id="atributo" name="atributo" class="form-select">
+                    <option value="consumoPorHora">Consumo por hora</option>
+                    <option value="costo">Costo</option>
+                    <option value="podruccionEnergia">Producción de Energía</option>
+                </select>
+            </div>
+            <div class="col-auto mt-3">
+                <button type="submit" class="btn btn-primary w-100">Ordenar</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="card shadow-sm p-3 mb-4 bg-body-tertiary rounded">
+    <form id="form-buscar">
+        <div class="row g-3 align-items-center">
+            <div class="col-md-4">
+                <label for="busquedad" class="form-label">Tipo de Búsqueda:</label>
+                <select id="busquedad" name="busquedad" class="form-select">
+                    <option value="busquedadbinaria">Binaria</option>
+                    <option value="busquedadlineal">Lineal</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label for="criterio" class="form-label">Criterio:</label>
+                <select id="criterio" name="criterio" class="form-select">
+                    <option value="modelo">Modelo</option>
+                    <option value="costo">Costo</option>
+                    <option value="uso">Uso</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label for="valor" class="form-label">Valor:</label>
+                <input type="text" id="valor" name="valor" class="form-control" placeholder="Ingrese el valor..." required>
+            </div>
+            <div class="col-auto mt-3">
+                <button type="submit" class="btn btn-primary w-100">Buscar</button>
+            </div>
+        </div>
+    </form>
+</div>
+
 <section id="courses" class="courses section">
     <div class="container mt-5">
-        <table class="table table-bordered table-hover">
+        <table id="tabla-generadores" class="table table-bordered table-hover">
             <thead class="table-dark">
                 <tr>
-                    <th>N</th>
                     <th>Modelo de generador</th>
                     <th>Costo</th>
                     <th>Consumo por hora</th>
-                    <th>Energia producida</th>
+                    <th>Producción de energía</th>
                     <th>Uso del generador</th>
-                    <th>Numero de serie del generador</th>
+                    <th>Número de serie del generador</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 {% for item in lista %}
                 <tr>
-                    <td>{{ item.id }}</td>
                     <td>{{ item.modelo }}</td>
                     <td>{{ item.costo }}</td>
                     <td>{{ item.consumoPorHora }}</td>
@@ -29,10 +88,9 @@
                     <td>{{ item.uso }}</td>
                     <td>{{ item.numeroSerie }}</td>
                     <td>
-                        <div class="btn-group-custom" >
-                           <!-- <button type="button" class="btn btn-danger btn-sm">Eliminar</button> -->
-                            <a type="button" class="btn btn-primary btn-sm" href="/generadores/editar/{{item.id}}">Editar</a>
-                            <a type="button" class="btn btn-success btn-sm" href="/familias/{{ item.numeroSerie }}">Ver familias</a>
+                        <div class="btn-group">
+                            <a class="btn btn-primary btn-sm" href="/generadores/editar/{{ item.id }}">Editar</a>
+                            <a class="btn btn-success btn-sm" href="/familias/{{ item.numeroSerie }}">Ver familias</a>
                         </div>
                     </td>
                 </tr>
@@ -41,5 +99,92 @@
         </table>
     </div>
 </section>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Ordenar Generadores
+        $('#form-ordenar').on('submit', function (e) {
+            e.preventDefault();
+            const metodo = $('#metodo').val();
+            const type_order = $('#type_order').val();
+            const atributo = $('#atributo').val();
+
+            $.ajax({
+                url: `/ordenar/${metodo}/${type_order}/${atributo}`,
+                method: 'GET',
+                success: function (response) {
+                    const tbody = $('#tabla-generadores tbody');
+                    tbody.empty();
+                    if (response.data && Array.isArray(response.data)) {
+                        response.data.forEach(item => {
+                            tbody.append(`
+                                <tr>
+                                    <td>${item.modelo}</td>
+                                    <td>${item.costo}</td>
+                                    <td>${item.consumoPorHora}</td>
+                                    <td>${item.podruccionEnergia}</td>
+                                    <td>${item.uso}</td>
+                                    <td>${item.numeroSerie}</td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <a class="btn btn-primary btn-sm" href="/generadores/editar/${item.id}">Editar</a>
+                                            <a class="btn btn-success btn-sm" href="/familias/${item.numeroSerie}">Ver familias</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            `);
+                        });
+                    } else {
+                        alert('No se encontraron resultados.');
+                    }
+                },
+                error: function () {
+                    alert('Error al ordenar los generadores.');
+                }
+            });
+        });
+
+        // Buscar Generadores
+        $('#form-buscar').on('submit', function (e) {
+            e.preventDefault();
+            const busquedad = $('#busquedad').val();
+            const criterio = $('#criterio').val();
+            const valor = $('#valor').val();
+
+            $.ajax({
+                url: `/busquedad/${busquedad}/${criterio}/${valor}`,
+                method: 'GET',
+                success: function (response) {
+                    const tbody = $('#tabla-generadores tbody');
+                    tbody.empty();
+                    let current = response.data.header;
+                    while (current) {
+                        tbody.append(`
+                            <tr>
+                                <td>${current.info.modelo}</td>
+                                <td>${current.info.costo}</td>
+                                <td>${current.info.consumoPorHora}</td>
+                                <td>${current.info.podruccionEnergia}</td>
+                                <td>${current.info.uso}</td>
+                                <td>${current.info.numeroSerie}</td>
+                                <td>
+                                    <div class="btn-group">
+                                        <a class="btn btn-primary btn-sm" href="/generadores/editar/${current.info.id}">Editar</a>
+                                        <a class="btn btn-success btn-sm" href="/familias/${current.info.numeroSerie}">Ver familias</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        `);
+                        current = current.next;
+                    }
+                },
+                error: function () {
+                    alert('Error al buscar generadores.');
+                }
+            });
+        });
+    });
+</script>
 
 {% endblock %}

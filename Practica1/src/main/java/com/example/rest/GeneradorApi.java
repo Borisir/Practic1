@@ -17,6 +17,8 @@ import javax.ws.rs.core.Response;
 import com.google.gson.Gson;
 
 import controller.dao.services.GeneradorServices;
+import controller.tda.list.LinkedList;
+import models.Generador;
 
 @Path("/generador")
 public class GeneradorApi {
@@ -108,6 +110,76 @@ public Response update(HashMap map ){
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(res).build();
     }    
   }
+
+@Path("/ordenarg/{metodo}/{type_order}/{atributo}")
+@GET
+@Produces(MediaType.APPLICATION_JSON)
+public Response ordenarProyectos(@PathParam("metodo") String metodo, @PathParam("type_order") Integer type_order, @PathParam("atributo") String atributo) {
+    HashMap<String, Object> map = new HashMap<>();
+    GeneradorServices gs = new GeneradorServices();
+    
+    try {
+        LinkedList<Generador> lista;
+
+        if("metodo1".equalsIgnoreCase(metodo)) {
+            lista = gs.ordenarQuicksort(type_order, atributo);
+        } else if("metodo2".equalsIgnoreCase(metodo)) {
+            lista = gs.ordenarMergeSort(type_order, atributo);
+        } else if("metodo3".equalsIgnoreCase(metodo)) {
+            lista = gs.ordenarShellSort(type_order, atributo);
+        } else {
+            map.put("msg", "ERROR");
+            map.put("data", "Algoritmo no válido: " + metodo);
+            return Response.status(Response.Status.BAD_REQUEST).entity(map).build();
+        }
+
+        map.put("msg", "Lista de proyectos ordenados");
+        map.put("data", lista.toArray());
+        return Response.ok(map).build();
+    } catch (Exception e) {
+        map.put("msg", "ERROR");
+        map.put("data", e.getMessage());
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(map).build();
+    }
+}
+
+
+@Path("/metodosdebusquedad/{busquedad}/{criterio}/{valor}")
+@GET
+@Produces(MediaType.APPLICATION_JSON)
+public Response buscarproyecto(@PathParam("busquedad") String busquedad ,@PathParam("criterio") String criterio,@PathParam("valor") String valor ) {
+    HashMap<String, Object> map = new HashMap<>();
+    GeneradorServices gs = new GeneradorServices();
+
+    try {
+        LinkedList<Generador> proyectobuscar;
+
+        if("busquedadbinaria".equalsIgnoreCase(busquedad)) {
+            proyectobuscar = gs.buscarGeneradorBinario(criterio, valor);
+        } else if ("busquedadlineal".equalsIgnoreCase(busquedad)) {
+            proyectobuscar = gs.GeneradorsLineal(criterio, valor);
+        } else {
+            map.put("msg", "ERROR");
+            map.put("data", "No es vaidad la busquedad ");
+            return Response.status(Response.Status.BAD_REQUEST).entity(map).build();
+        } 
+
+        if (proyectobuscar != null && !proyectobuscar.isEmpty()) {
+            map.put("msg", "Proyecto encontrado");
+            map.put("data", proyectobuscar);
+            return Response.ok(map).build();
+        } else {
+            map.put("msg", "Proyecto no encontrado");
+            return Response.status(Response.Status.NOT_FOUND).entity(map).build();
+        }
+        } catch(Exception e){
+            map.put("msg","ERROR");
+            map.put("data", e.getMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(map).build();
+
+    }
+}
+
 
 }
 
