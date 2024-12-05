@@ -12,7 +12,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import controller.dao.services.GeneradorServices;
-@Path("/inversion") // Cambiado para que coincida con la URL que mostramos
+@Path("/pruebita") // Cambiado para que coincida con la URL que mostramos
 public class AppTest {
 
     private static final Logger logger = Logger.getLogger(AppTest.class.getName());
